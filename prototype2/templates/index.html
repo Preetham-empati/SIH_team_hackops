@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSync AI - Your Career Compass</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#mainNavbar">
+
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">SkillSync AI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+
+                    {% if session.username %}
+                    <li class="nav-item">
+                        <span class="navbar-text ms-lg-2">Welcome, {{ session.username }}!</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-danger text-white ms-lg-2 px-3 py-2"
+                            href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a id="signInBtn" class="nav-link btn btn-outline-primary text-white ms-lg-2"
+                            href="{{ url_for('login') }}">Sign In</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+    <div class="container">
+        <h1 class="display-4" data-aos="fade-up" data-aos-delay="100">Your Career Dilemma Ends Here.</h1>
+        <p class="lead" data-aos="fade-up" data-aos-delay="200">Stop guessing, start growing. We generate a personalized, visual learning pathway aligned with official frameworks to guide you from student to sought-after professional.</p>
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg btn-glow" data-aos="fade-up" data-aos-delay="300">✨ Generate Your Pathway for Free</a>
+    </div>
+</header>
+
+    <section id="features" class="section-padding section-bg">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="fw-bold" data-aos="fade-up">A Smarter Way to Plan Your Future</h2>
+                    <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Our platform is built on three core
+                        pillars to ensure your success.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4" data-aos="fade-up-right">
+                    <i class="bi bi-graph-up-arrow feature-icon mb-3"></i>
+                    <h3 class="fw-bold">Visual Pathways</h3>
+                    <p class="text-muted">Get a clear, step-by-step skill tree from your current level to your dream
+                        job, aligned with the NSQF framework.</p>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up">
+                    <i class="bi bi-patch-check-fill feature-icon mb-3"></i>
+                    <h3 class="fw-bold">Verified Courses</h3>
+                    <p class="text-muted">We suggest courses from official sources like NCVET, ensuring your learning is
+                        recognized and valuable.</p>
+                </div>
+                <div class="col-md-4 mb-4" data-aos="fade-up-left">
+                    <i class="bi bi-briefcase-fill feature-icon mb-3"></i>
+                    <h3 class="fw-bold">Labour Market Connect</h3>
+                    <p class="text-muted">Discover internships and job opportunities that match your skills as you
+                        progress on your learning journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="fw-bold" data-aos="fade-up">Get Started in 3 Simple Steps</h2>
+                    <p class="text-muted" data-aos="fade-up" data-aos-delay="100">Your journey from confusion to clarity
+                        is just a few clicks away.</p>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <div class="pathway-container">
+                        <div class="pathway-node start" data-aos="fade-down" data-aos-delay="300">Start</div>
+                        <div class="pathway-line line1" data-aos-delay="400"></div>
+                        <div class="pathway-node mid" data-aos="fade-down" data-aos-delay="600">Analyze</div>
+                        <div class="pathway-line line2" data-aos-delay="700"></div>
+                        <div class="pathway-node end" data-aos="fade-down" data-aos-delay="900">Succeed</div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-4 mt-lg-0" data-aos="fade-left" data-aos-delay="100">
+                    <div class="how-it-works-step">
+                        <div class="step-number">1</div>
+                        <h4 class="fw-bold">Create Your Profile</h4>
+                        <p class="text-muted">Tell us about your interests, current skills, and career aspirations. It's
+                            quick, easy, and the first step towards personalization.</p>
+                    </div>
+                    <div class="how-it-works-step">
+                        <div class="step-number">2</div>
+                        <h4 class="fw-bold">Generate Your Pathway</h4>
+                        <p class="text-muted">Our AI engine analyzes your profile against market data and official
+                            frameworks to build your unique, visual skill tree.</p>
+                    </div>
+                    <div class="how-it-works-step">
+                        <div class="step-number">3</div>
+                        <h4 class="fw-bold">Start Learning & Growing</h4>
+                        <p class="text-muted mb-0">Follow your path, take recommended courses, and track your progress
+                            as you unlock new skills and opportunities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section-padding section-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 class="fw-bold" data-aos="fade-up">Trusted by Ambitious Learners</h2>
+                    <p class="text-muted" data-aos="fade-up" data-aos-delay="100">See how SkillSync AI has transformed
+                        careers.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"
+                                aria-label="Slide 2"></button>
+                        </div>
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="testimonial-card text-center"><img src="https://i.pravatar.cc/150?img=12"
+                                        class="mx-auto mb-3" alt="Priya Sharma">
+                                    <p class="lead fst-italic">"I was lost in a sea of career options. SkillSync AI gave
+                                        me a clear roadmap and the confidence to pursue a career in data analytics. I
+                                        landed an internship within 3 months!"</p>
+                                    <h5 class="fw-bold mt-3">Priya Sharma</h5>
+                                    <p class="text-muted">Data Analyst Intern</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card text-center"><img src="https://i.pravatar.cc/150?img=32"
+                                        class="mx-auto mb-3" alt="Rohan Verma">
+                                    <p class="lead fst-italic">"The visual pathway was a game-changer. Seeing every
+                                        skill I needed to learn laid out in front of me was incredibly motivating. It's
+                                        the best career tool for students in India."</p>
+                                    <h5 class="fw-bold mt-3">Rohan Verma</h5>
+                                    <p class="text-muted">Aspiring Web Developer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding cta-section text-center text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold" data-aos="fade-up">Ready to Build Your Future?</h2>
+                    <p class="my-4" data-aos="fade-up" data-aos-delay="100">Don't leave your career to chance. Get your
+                        personalized, AI-powered learning pathway today and take the first step towards your dream job.
+                    </p>
+                    <a href="#" class="btn btn-light btn-lg btn-glow" data-aos="fade-up" data-aos-delay="200">✨ Start
+                        for Free, Grow Forever</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p>&copy; 2025 SkillSync AI. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
