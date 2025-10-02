@@ -1,0 +1,33 @@
+{
+  "pathway_title": "Junior Web Developer",
+  "steps": [
+    {
+      "nsqf_level": 3,
+      "title": "IT Fundamentals & Web Basics",
+      "description": "Understand the basics of computers, internet, and fundamental web technologies.",
+      "skills": ["Computer Basics", "HTML5", "CSS3"],
+      "status": "completed"
+    },
+    {
+      "nsqf_level": 4,
+      "title": "Programming with JavaScript",
+      "description": "Learn the core programming language of the web to create interactive sites.",
+      "skills": ["JavaScript ES6", "DOM Manipulation", "Version Control (Git)"],
+      "status": "in_progress"
+    },
+    {
+      "nsqf_level": 4,
+      "title": "Frontend Frameworks",
+      "description": "Build modern, responsive, and scalable user interfaces with a popular framework.",
+      "skills": ["React.js", "Component-Based Architecture", "API Integration"],
+      "status": "not_started"
+    },
+    {
+      "nsqf_level": 5,
+      "title": "Backend Development",
+      "description": "Create server-side logic and databases to power your web applications.",
+      "skills": ["Node.js & Express", "REST APIs", "SQL & NoSQL Databases"],
+      "status": "not_started"
+    }
+  ]
+}

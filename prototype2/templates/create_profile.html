@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}Create Your Profile{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-1">One last step...</h2>
+<p class="text-muted mb-4">Help us personalize your journey. Tell us a bit about yourself.</p>
+
+<form method="post" enctype="multipart/form-data"> {# ADD enctype for file uploads #}
+    <div class="mb-3">
+        <label for="profile_picture" class="form-label">Profile Picture (Optional)</label>
+        <input class="form-control" type="file" id="profile_picture" name="profile_picture" accept="image/png, image/jpeg, image/gif">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="male" value="Male" required>
+                <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="female" value="Female">
+                <label class="form-check-label" for="female">Female</label>
+            </div>
+             <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="gender" id="other" value="Other">
+                <label class="form-check-label" for="other">Other</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="study_age" class="form-label">Age</label>
+        <input type="number" class="form-control" id="study_age" name="study_age" required min="10" max="100">
+    </div>
+
+    <div class="mb-3">
+        <label for="interests" class="form-label">Your Interests (e.g., AI, Web Development, Data Science)</label>
+        <textarea class="form-control" id="interests" name="interests" rows="2" required></textarea>
+    </div>
+    
+    <div class="mb-3">
+        <label for="aspirations" class="form-label">Career Aspirations (e.g., Become a Cloud Engineer)</label>
+        <textarea class="form-control" id="aspirations" name="aspirations" rows="2" required></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="achievements" class="form-label">Achievements (Optional)</label>
+        <textarea class="form-control" id="achievements" name="achievements" rows="2"></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary w-100 mb-3">Complete Profile & Proceed to Login</button>
+</form>
+{% endblock %}

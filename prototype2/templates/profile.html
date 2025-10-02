@@ -1,0 +1,79 @@
+{% extends "dashboard_layout.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">My Profile</h1>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-4 text-center">
+                        <img src="{{ url_for('static', filename='profile_pics/' + user.profile_picture) }}" alt="Profile Picture" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #ddd;">
+                        <label for="profile_picture" class="btn btn-sm btn-outline-primary d-block mx-auto mt-2" style="max-width: 200px;">
+                            <i class="bi bi-camera me-1"></i> Change Picture
+                            <input type="file" id="profile_picture" name="profile_picture" accept="image/png, image/jpeg, image/gif" style="display: none;">
+                        </label>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="username" class="col-sm-3 col-form-label">Username:</label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control-plaintext" id="username" value="{{ user.username }}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="email" class="col-sm-3 col-form-label">Email:</label>
+                        <div class="col-sm-9">
+                            <input type="text" readonly class="form-control-plaintext" id="email" value="{{ user.email }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male" value="Male" {% if user.gender == 'Male' %}checked{% endif %} required>
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="female" value="Female" {% if user.gender == 'Female' %}checked{% endif %}>
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                             <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="other" value="Other" {% if user.gender == 'Other' %}checked{% endif %}>
+                                <label class="form-check-label" for="other">Other</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="study_age" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="study_age" name="study_age" value="{{ user.study_age }}" required min="10" max="100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="interests" class="form-label">Your Interests</label>
+                        <textarea class="form-control" id="interests" name="interests" rows="3" required>{{ user.interests }}</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="aspirations" class="form-label">Career Aspirations</label>
+                        <textarea class="form-control" id="aspirations" name="aspirations" rows="3" required>{{ user.aspirations }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="achievements" class="form-label">Achievements (Optional)</label>
+                        <textarea class="form-control" id="achievements" name="achievements" rows="3">{{ user.achievements }}</textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success mt-3">Update Profile</button>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3 ms-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

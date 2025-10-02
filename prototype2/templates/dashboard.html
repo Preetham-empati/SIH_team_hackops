@@ -1,0 +1,243 @@
+{% extends "dashboard_layout.html" %}
+
+{% block content %}
+<style>
+    .stat-card {
+        border-left: 5px solid;
+        transition: all 0.3s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .stat-card.border-success { border-color: #198754 !important; }
+    .stat-card.border-primary { border-color: #0d6efd !important; }
+    .stat-card.border-warning { border-color: #ffc107 !important; }
+
+    .schedule-item { border-bottom: 1px solid #eee; }
+    .schedule-item:last-child { border-bottom: none; }
+    .course-card img {
+        height: 150px;
+        object-fit: cover;
+    }
+    .progress-circle {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: auto;
+    }
+</style>
+
+<div class="container-fluid">
+    {% if pathway %}
+    <!-- Top Row: Stats Cards -->
+    <div class="row mb-4 g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm stat-card border-success">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-check2-circle fs-1 text-success me-4"></i>
+                    <div>
+                        <h6 class="card-subtitle text-muted">Completed Courses</h6>
+                        <h2 class="card-title fw-bold">{{ completed }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm stat-card border-primary">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-person-workspace fs-1 text-primary me-4"></i>
+                    <div>
+                        <h6 class="card-subtitle text-muted">In Progress</h6>
+                        <h2 class="card-title fw-bold">{{ in_progress }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm stat-card border-warning">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-calendar3-range fs-1 text-warning me-4"></i>
+                    <div>
+                        <h6 class="card-subtitle text-muted">Upcoming</h6>
+                        <h2 class="card-title fw-bold">{{ upcoming }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Middle Row: Charts -->
+    <div class="row mb-4 g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Learning Activity (Hours/Month)</h5>
+                    <canvas id="learningActivityChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <h5 class="card-title">Overall Progress</h5>
+                    <div class="progress-circle">
+                         <canvas id="progressPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row: Schedule and Courses -->
+    <div class="row mb-4 g-4">
+        <div class="col-lg-5">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Upcoming Schedule</h5>
+                    <div class="list-group list-group-flush">
+                        {% for item in schedule %}
+                        <div class="list-group-item d-flex schedule-item px-0">
+                            <div class="me-3 text-center">
+                                <div class="bg-light p-2 rounded">
+                                    <h6 class="mb-0">{{ item.date.split('-')[2] }}</h6>
+                                    <small>{{ item.date.split('-')[1] | int | month_name }}</small>
+                                </div>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">{{ item.title }}</h6>
+                                <small class="text-muted"><i class="bi bi-clock me-1"></i> {{ item.time }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Popular Courses</h5>
+                     <div class="row">
+                        {% for course in popular %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card course-card">
+                                <img src="{{ course.image }}" class="card-img-top" alt="{{ course.title }}">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ course.title }}</h6>
+                                    <p class="card-text text-muted"><i class="bi bi-people-fill me-1"></i> {{ course.students }} Students</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View Course</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <div class="alert alert-info text-center">
+        <h4 class="alert-heading">Welcome!</h4>
+        <p>Your personalized learning pathway has not been generated yet. Please go to the "My Courses" section to start.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- ADD Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    {% if pathway %}
+    // --- Learning Activity Line Chart ---
+    const activityCtx = document.getElementById('learningActivityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: {{ activity.labels | tojson }},
+            datasets: [{
+                label: 'Hours Studied',
+                data: {{ activity.data | tojson }},
+                backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                borderColor: 'rgba(13, 110, 253, 1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // --- Overall Progress Pie Chart ---
+    const progressCtx = document.getElementById('progressPieChart').getContext('2d');
+    new Chart(progressCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Completed', 'Remaining'],
+            datasets: [{
+                data: [{{ progress }}, 100 - {{ progress }}],
+                backgroundColor: [
+                    '#198754', // Success color
+                    '#e9ecef'  // Light grey
+                ],
+                borderColor: '#ffffff',
+                borderWidth: 4,
+                cutout: '70%'
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                },
+                // Custom plugin to display text in the center
+                centerText: {
+                    display: true,
+                    text: `{{ progress }}%`,
+                    color: '#333',
+                    font: 'bold 24px Poppins'
+                }
+            }
+        },
+        // Registering the custom plugin
+        plugins: [{
+            id: 'centerText',
+            beforeDraw: function(chart) {
+                if (chart.options.plugins.centerText.display) {
+                    let ctx = chart.ctx;
+                    let centerConfig = chart.options.plugins.centerText;
+                    let fontStyle = centerConfig.font || '16px sans-serif';
+                    let txt = centerConfig.text;
+                    let color = centerConfig.color || '#000';
+                    ctx.save();
+                    ctx.font = fontStyle;
+                    ctx.textBaseline = 'middle';
+                    ctx.textAlign = 'center';
+                    let x = chart.chartArea.left + (chart.chartArea.width / 2);
+                    let y = chart.chartArea.top + (chart.chartArea.height / 2);
+                    ctx.fillStyle = color;
+                    ctx.fillText(txt, x, y);
+                    ctx.restore();
+                }
+            }
+        }]
+    });
+    {% endif %}
+});
+</script>
+{% endblock %}

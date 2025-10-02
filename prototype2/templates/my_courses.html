@@ -1,0 +1,71 @@
+{% extends "dashboard_layout.html" %}
+
+{% block content %}
+<style>
+    .course-progress-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .course-progress-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .course-progress-bar {
+        height: 8px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">My Learning Pathway: {{ pathway.pathway_title if pathway else 'N/A' }}</h1>
+        <button class="btn btn-outline-primary"><i class="bi bi-filter me-2"></i> Filter Courses</button>
+    </div>
+
+    <div class="row g-4">
+        {% if pathway and pathway.steps %}
+            {% for step in pathway.steps %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm course-progress-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">NSQF Level {{ step.nsqf_level }}</span>
+                            {% if step.status == 'completed' %}
+                                <span class="badge bg-success-subtle text-success-emphasis rounded-pill"><i class="bi bi-check-circle-fill me-1"></i> Completed</span>
+                            {% elif step.status == 'in_progress' %}
+                                <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill"><i class="bi bi-hourglass-split me-1"></i> In Progress</span>
+                            {% else %}
+                                <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill"><i class="bi bi-lock-fill me-1"></i> Not Started</span>
+                            {% endif %}
+                        </div>
+                        <h5 class="card-title">{{ step.title }}</h5>
+                        <p class="card-text text-muted small">{{ step.description }}</p>
+                        <div class="mb-3">
+                            <h6 class="small fw-bold">Skills Covered:</h6>
+                            {% for skill in step.skills %}
+                                <span class="badge bg-light text-dark me-1">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        {% if step.status == 'in_progress' %}
+                            <p class="small mb-1">Progress: <strong>65%</strong></p>
+                            <div class="progress course-progress-bar mb-2">
+                                <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <a href="#" class="btn btn-primary w-100">Continue Learning</a>
+                        {% elif step.status == 'completed' %}
+                            <a href="#" class="btn btn-outline-success w-100">Review Course</a>
+                        {% else %}
+                            <a href="#" class="btn btn-secondary w-100 disabled">Not Yet Started</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">You do not have an active learning pathway yet.</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
